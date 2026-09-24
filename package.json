@@ -41,12 +41,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tadeumelembe/kanban-board.git"
+    "url": "git+https://github.com/tadeumelembe/react-native-kanban-dnd.git"
   },
   "bugs": {
-    "url": "https://github.com/tadeumelembe/kanban-board/issues"
+    "url": "https://github.com/tadeumelembe/react-native-kanban-dnd/issues"
   },
-  "homepage": "https://github.com/tadeumelembe/kanban-board#readme",
+  "homepage": "https://github.com/tadeumelembe/react-native-kanban-dnd#readme",
   "author": "Tadeu Melembe",
   "license": "MIT",
   "peerDependencies": {
