@@ -81,6 +81,7 @@ export function KanbanCard({ card, column, index }: CardProps) {
           const origin = measure(containerRef);
           if (!cardFrame || !origin) return;
 
+          drag.overlayReady.set(false);
           drag.activeId.set(id);
           drag.activeColumn.set(columnId);
           drag.activeIndex.set(index);
@@ -111,9 +112,11 @@ export function KanbanCard({ card, column, index }: CardProps) {
   );
 
   const animatedStyle = useAnimatedStyle(() => {
-    const offset = getCardOffset(drag, cardGap, columnId, index);
+    // The dragged card stays in place under the overlay instead of opening a gap for itself.
+    const offset = drag.activeId.get() === id ? 0 : getCardOffset(drag, cardGap, columnId, index);
     return {
-      opacity: drag.activeId.get() === id ? 0 : 1,
+      // Stay visible until the overlay has mounted on top, so there is no blank frame.
+      opacity: drag.activeId.get() === id && drag.overlayReady.get() ? 0 : 1,
       transform: [
         { translateY: drag.activeId.get() === null ? 0 : withTiming(offset, { duration: 150 }) },
       ],

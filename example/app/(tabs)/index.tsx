@@ -37,7 +37,7 @@ export default function BoardScreen() {
           // Only finished work can be archived.
           canDropCard={(_card, from, to) => to.id !== 'archived' || from.id === 'done'}
           theme={{
-            columnBackground: colors.surface,
+            columnBackground: colors.background,
             columnHighlightBackground: colors.highlight,
             cardBackground: colors.card,
             cardBorder: colors.border,

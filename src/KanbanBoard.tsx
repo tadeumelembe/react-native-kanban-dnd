@@ -74,6 +74,7 @@ export function KanbanBoard<
     drag.hoverColumn.set(null);
     drag.hoverIndex.set(-1);
     drag.blockedColumns.set({});
+    drag.overlayReady.set(false);
   }, [drag]);
 
   // Clear drag offsets in the same commit that renders the new card order.

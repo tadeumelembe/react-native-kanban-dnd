@@ -35,6 +35,8 @@ export interface DragState {
   hoverIndex: SharedValue<number>;
   /** Columns the active card may not be dropped into. */
   blockedColumns: SharedValue<Record<string, boolean>>;
+  /** Whether the drag overlay is on screen, so the source card can be hidden. */
+  overlayReady: SharedValue<boolean>;
 
   boardScrollX: SharedValue<number>;
   columnScroll: SharedValue<Record<string, number>>;
@@ -53,6 +55,7 @@ export function useDragState(): DragState {
   const hoverColumn = useSharedValue<string | null>(null);
   const hoverIndex = useSharedValue(-1);
   const blockedColumns = useSharedValue<Record<string, boolean>>({});
+  const overlayReady = useSharedValue(false);
   const boardScrollX = useSharedValue(0);
   const columnScroll = useSharedValue<Record<string, number>>({});
   const columnFrames = useSharedValue<Record<string, ColumnFrame>>({});
@@ -70,6 +73,7 @@ export function useDragState(): DragState {
       hoverColumn,
       hoverIndex,
       blockedColumns,
+      overlayReady,
       boardScrollX,
       columnScroll,
       columnFrames,
