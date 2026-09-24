@@ -11,6 +11,7 @@ import Animated, {
 
 import { BoardContext, type BoardConfig, type BoardContextValue, useDragState } from './context';
 import { type ActiveDrag, DragOverlay } from './DragOverlay';
+import { getDropIndex } from './getDropIndex';
 import { KanbanColumn } from './KanbanColumn';
 import { useKanbanTheme } from './theme';
 import type { KanbanBoardProps, KanbanCardBase, KanbanCardData, KanbanColumnData } from './types';
@@ -172,26 +173,30 @@ export function KanbanBoard<
       }
     }
     if (hoverColumn !== null && drag.blockedColumns.get()[hoverColumn]) hoverColumn = null;
+    const previousHoverColumn = drag.hoverColumn.get();
     drag.hoverColumn.set(hoverColumn);
     if (hoverColumn === null) return;
 
     const frame = frames[hoverColumn];
-    const contentY = y - (frame.y + frame.bodyY) + (drag.columnScroll.get()[hoverColumn] ?? 0);
-    const cardIds = drag.order.get()[hoverColumn] ?? [];
-    const layouts = drag.cardLayouts.get();
-    const isSourceColumn = hoverColumn === drag.activeColumn.get();
-    const slot = drag.activeHeight.get() + cardGap;
-
-    let index = 0;
-    for (let i = 0; i < cardIds.length; i++) {
-      if (cardIds[i] === drag.activeId.get()) continue;
-      const layout = layouts[cardIds[i]];
-      if (!layout) continue;
-      // Position with the dragged card's slot already closed.
-      const top = isSourceColumn && i > drag.activeIndex.get() ? layout.y - slot : layout.y;
-      if (contentY > top + layout.height / 2) index++;
-      else break;
-    }
+    const activeHeight = drag.activeHeight.get();
+    // Center of the dragged card (not the finger), in the column's content coords.
+    const dragCenter =
+      y +
+      drag.grabOffset.get().y +
+      activeHeight / 2 -
+      (frame.y + frame.bodyY) +
+      (drag.columnScroll.get()[hoverColumn] ?? 0);
+    // The gap only exists in this column if it was already the hover column.
+    const gapIndex = hoverColumn === previousHoverColumn ? drag.hoverIndex.get() : Infinity;
+    const index = getDropIndex({
+      cardIds: drag.order.get()[hoverColumn] ?? [],
+      layouts: drag.cardLayouts.get(),
+      activeId: drag.activeId.get(),
+      activeIndex: hoverColumn === drag.activeColumn.get() ? drag.activeIndex.get() : -1,
+      slot: activeHeight + cardGap,
+      gapIndex,
+      dragCenter,
+    });
     drag.hoverIndex.set(index);
   });
 

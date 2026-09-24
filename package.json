@@ -24,7 +24,7 @@
     "build": "bob build",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src",
-    "test": "node --experimental-strip-types --no-warnings --test test/moveCard.test.ts",
+    "test": "node --experimental-strip-types --no-warnings --test test/moveCard.test.ts test/getDropIndex.test.ts",
     "prepare": "bob build",
     "example": "yarn --cwd example"
   },
