@@ -1,5 +1,6 @@
 import * as Haptics from 'expo-haptics';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useState } from 'react';
+import { KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { KanbanBoard, useKanbanBoard } from 'react-native-kanban-dnd';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -19,15 +20,15 @@ export default function BoardScreen() {
   const colors = Colors[useColorScheme()];
   const { columns, setColumns, onMoveCard } = useKanbanBoard<Task>(COLUMNS);
 
-  const addCard = (columnId: string) => {
-    const card: Task = { id: String(nextId++), title: 'New task', priority: 'low' };
+  const addCard = (columnId: string, title: string) => {
+    const card: Task = { id: String(nextId++), title, priority: 'low' };
     setColumns((prev) =>
       prev.map((c) => (c.id === columnId ? { ...c, cards: [...c.cards, card] } : c))
     );
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'android' ? 'height' : 'padding'}>
       <SafeAreaView edges={['top']} style={{ flex: 1 }}>
         <KanbanBoard<Task>
           columns={columns}
@@ -65,13 +66,55 @@ export default function BoardScreen() {
             </View>
           )}
           renderColumnFooter={({ column }) => (
-            <Pressable onPress={() => addCard(column.id)} style={styles.addButton}>
-              <Text style={[styles.addText, { color: colors.muted }]}>+ Add card</Text>
-            </Pressable>
+            <AddCardFooter colors={colors} onSubmit={(title) => addCard(column.id, title)} />
           )}
         />
       </SafeAreaView>
-    </View>
+    </KeyboardAvoidingView>
+  );
+}
+
+function AddCardFooter({
+  colors,
+  onSubmit,
+}: {
+  colors: (typeof Colors)[keyof typeof Colors];
+  onSubmit: (title: string) => void;
+}) {
+  const [editing, setEditing] = useState(false);
+  const [title, setTitle] = useState('');
+
+  const close = () => {
+    setEditing(false);
+    setTitle('');
+  };
+
+  const submit = () => {
+    const trimmed = title.trim();
+    if (trimmed) onSubmit(trimmed);
+    close();
+  };
+
+  if (!editing) {
+    return (
+      <Pressable onPress={() => setEditing(true)} style={styles.addButton}>
+        <Text style={[styles.addText, { color: colors.muted }]}>+ Add card</Text>
+      </Pressable>
+    );
+  }
+
+  return (
+    <TextInput
+      autoFocus
+      value={title}
+      onChangeText={setTitle}
+      onSubmitEditing={submit}
+      onBlur={close}
+      placeholder="Card title"
+      placeholderTextColor={colors.muted}
+      returnKeyType="done"
+      style={[styles.input, { color: colors.text, backgroundColor: colors.card, borderColor: colors.tint }]}
+    />
   );
 }
 
@@ -115,5 +158,13 @@ const styles = StyleSheet.create({
   addText: {
     fontSize: 14,
     fontWeight: '500',
+  },
+  input: {
+    marginTop: 8,
+    borderRadius: 12,
+    borderWidth: 1,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    fontSize: 15,
   },
 });
