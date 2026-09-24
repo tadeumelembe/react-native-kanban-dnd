@@ -1,14 +1,14 @@
 {
-  "name": "kanban-dnd",
+  "name": "react-native-kanban-dnd-example",
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
     "start": "expo start",
-    "reset-project": "node ./scripts/reset-project.js",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "reset-project": "node ./scripts/reset-project.js"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
