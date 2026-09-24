@@ -1,6 +1,6 @@
 {
   "name": "react-native-kanban-dnd",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A customizable drag-and-drop Kanban board for React Native, built on Reanimated and Gesture Handler.",
   "main": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",
