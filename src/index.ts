@@ -1,7 +1,6 @@
 export { KanbanBoard } from './KanbanBoard';
-export { darkTheme, lightTheme, type KanbanTheme } from './theme';
 export { moveCard } from './moveCard';
-export { useKanbanBoard } from './useKanbanBoard';
+export { darkTheme, type KanbanTheme, lightTheme } from './theme';
 export type {
   KanbanBoardProps,
   KanbanCardBase,
@@ -14,3 +13,4 @@ export type {
   KanbanRenderColumnInfo,
   KanbanStyles,
 } from './types';
+export { useKanbanBoard } from './useKanbanBoard';

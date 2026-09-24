@@ -35,7 +35,14 @@ test('dragging past the last card drops at the end', () => {
 });
 
 test('cards from another column open a gap at the right spot', () => {
-  const fromOther = { cardIds, layouts, activeId: 'x', activeIndex: -1, slot: 68, gapIndex: Infinity };
+  const fromOther = {
+    cardIds,
+    layouts,
+    activeId: 'x',
+    activeIndex: -1,
+    slot: 68,
+    gapIndex: Infinity,
+  };
   assert.equal(getDropIndex({ ...fromOther, dragCenter: 10 }), 0);
   assert.equal(getDropIndex({ ...fromOther, dragCenter: 120 }), 1);
   assert.equal(getDropIndex({ ...fromOther, dragCenter: 500 }), 3);
@@ -43,7 +50,15 @@ test('cards from another column open a gap at the right spot', () => {
 
 test('an empty column always drops at index 0', () => {
   assert.equal(
-    getDropIndex({ cardIds: [], layouts: {}, activeId: 'x', activeIndex: -1, slot: 68, gapIndex: Infinity, dragCenter: 300 }),
+    getDropIndex({
+      cardIds: [],
+      layouts: {},
+      activeId: 'x',
+      activeIndex: -1,
+      slot: 68,
+      gapIndex: Infinity,
+      dragCenter: 300,
+    }),
     0
   );
 });

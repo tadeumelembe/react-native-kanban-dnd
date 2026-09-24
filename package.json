@@ -23,9 +23,10 @@
   "scripts": {
     "build": "bob build",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint src",
+    "lint": "biome check .",
+    "format": "biome check --write .",
     "test": "node --experimental-strip-types --no-warnings --test test/moveCard.test.ts test/getDropIndex.test.ts",
-    "prepare": "bob build",
+    "prepare": "husky && bob build",
     "example": "yarn --cwd example"
   },
   "keywords": [
@@ -56,9 +57,9 @@
     "react-native-worklets": ">=0.5.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.5.14",
     "@types/react": "~19.2.4",
-    "eslint": "^9.25.0",
-    "eslint-config-expo": "~57.0.2",
+    "husky": "^9.1.7",
     "react": "19.2.3",
     "react-native": "0.86.3",
     "react-native-builder-bob": "^0.43.1",

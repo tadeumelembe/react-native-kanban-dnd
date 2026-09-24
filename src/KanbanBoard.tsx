@@ -9,7 +9,7 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated';
 
-import { BoardContext, type BoardConfig, type BoardContextValue, useDragState } from './context';
+import { type BoardConfig, BoardContext, type BoardContextValue, useDragState } from './context';
 import { type ActiveDrag, DragOverlay } from './DragOverlay';
 import { getDropIndex } from './getDropIndex';
 import { KanbanColumn } from './KanbanColumn';
@@ -91,7 +91,8 @@ export function KanbanBoard<
       if (canDropCard) {
         const blocked: Record<string, boolean> = {};
         for (const target of cols) {
-          if (target.id !== columnId && !canDropCard(card, column, target)) blocked[target.id] = true;
+          if (target.id !== columnId && !canDropCard(card, column, target))
+            blocked[target.id] = true;
         }
         drag.blockedColumns.set(blocked);
       }
@@ -124,7 +125,13 @@ export function KanbanBoard<
         toColumn !== undefined &&
         (toColumn.id === fromColumnId || !canDropCard || canDropCard(card, fromColumn, toColumn));
       const target = allowed ? toColumn.id : null;
-      onDragEnd?.({ card, fromColumnId, fromIndex, toColumnId: target, toIndex: target ? toIndex : -1 });
+      onDragEnd?.({
+        card,
+        fromColumnId,
+        fromIndex,
+        toColumnId: target,
+        toIndex: target ? toIndex : -1,
+      });
 
       if (target === null || (target === fromColumnId && toIndex === fromIndex)) {
         resetDrag();
@@ -245,7 +252,7 @@ export function KanbanBoard<
   const isDragging = active !== null;
   const context = useMemo<BoardContextValue>(
     () => ({ drag, config, containerRef, isDragging, startDrag, endDrag }),
-    [drag, config, containerRef, isDragging, startDrag, endDrag]
+    [drag, config, isDragging, startDrag, endDrag]
   );
 
   return (

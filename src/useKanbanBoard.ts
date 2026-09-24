@@ -14,7 +14,9 @@ export function useKanbanBoard<
   const [columns, setColumns] = useState<TColumn[]>(initialColumns);
 
   const onMoveCard = useCallback((event: KanbanMoveEvent<TCard>) => {
-    setColumns((prev) => moveCard<TCard, TColumn>(prev, event.card.id, event.toColumnId, event.toIndex));
+    setColumns((prev) =>
+      moveCard<TCard, TColumn>(prev, event.card.id, event.toColumnId, event.toIndex)
+    );
   }, []);
 
   return { columns, setColumns, onMoveCard };

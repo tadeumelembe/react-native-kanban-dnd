@@ -19,7 +19,14 @@ const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 
 const HIGHLIGHT_DURATION = 200;
 
-const EMPTY_FRAME: ColumnFrame = { x: 0, y: 0, width: 0, bodyY: 0, bodyHeight: 0, contentHeight: 0 };
+const EMPTY_FRAME: ColumnFrame = {
+  x: 0,
+  y: 0,
+  width: 0,
+  bodyY: 0,
+  bodyHeight: 0,
+  contentHeight: 0,
+};
 
 export function KanbanColumn({ column }: { column: KanbanColumnData<KanbanCardBase> }) {
   const { drag, config, isDragging } = useBoardContext();
@@ -106,7 +113,9 @@ export function KanbanColumn({ column }: { column: KanbanColumnData<KanbanCardBa
         config.renderColumnHeader(info)
       ) : (
         <View style={[styles.header, custom.columnHeader]}>
-          <Text style={[styles.title, { color: theme.text }, custom.columnTitle]}>{column.title}</Text>
+          <Text style={[styles.title, { color: theme.text }, custom.columnTitle]}>
+            {column.title}
+          </Text>
           {config.showColumnCount ? (
             <Text style={[styles.count, { color: theme.mutedText }, custom.columnCount]}>
               {column.cards.length}
@@ -126,15 +135,15 @@ export function KanbanColumn({ column }: { column: KanbanColumnData<KanbanCardBa
           {column.cards.map((card, index) => (
             <KanbanCard key={card.id} card={card} column={column} index={index} />
           ))}
-          {column.cards.length === 0
-            ? config.renderEmptyColumn
-              ? config.renderEmptyColumn(info)
-              : (
-                  <Text style={[styles.empty, { color: theme.mutedText }, custom.emptyText]}>
-                    {config.emptyColumnText}
-                  </Text>
-                )
-            : null}
+          {column.cards.length === 0 ? (
+            config.renderEmptyColumn ? (
+              config.renderEmptyColumn(info)
+            ) : (
+              <Text style={[styles.empty, { color: theme.mutedText }, custom.emptyText]}>
+                {config.emptyColumnText}
+              </Text>
+            )
+          ) : null}
           {config.renderColumnFooter?.(info)}
         </AnimatedScrollView>
       </View>

@@ -77,7 +77,6 @@ export function useDragState(): DragState {
       order,
     }),
     // Shared values are stable for the lifetime of the component.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 }

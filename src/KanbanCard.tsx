@@ -1,7 +1,12 @@
 import { useMemo } from 'react';
 import { type LayoutChangeEvent, StyleSheet, Text, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, { measure, useAnimatedRef, useAnimatedStyle, withTiming } from 'react-native-reanimated';
+import Animated, {
+  measure,
+  useAnimatedRef,
+  useAnimatedStyle,
+  withTiming,
+} from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 
 import { type BoardConfig, getCardOffset, useBoardContext } from './context';
@@ -82,7 +87,10 @@ export function KanbanCard({ card, column, index }: CardProps) {
           drag.activeHeight.set(cardFrame.height);
           drag.hoverColumn.set(columnId);
           drag.hoverIndex.set(index);
-          drag.grabOffset.set({ x: cardFrame.pageX - e.absoluteX, y: cardFrame.pageY - e.absoluteY });
+          drag.grabOffset.set({
+            x: cardFrame.pageX - e.absoluteX,
+            y: cardFrame.pageY - e.absoluteY,
+          });
           drag.pointer.set({ x: e.absoluteX - origin.pageX, y: e.absoluteY - origin.pageY });
           scheduleOnRN(startDrag, id, columnId, index, cardFrame.width);
         })
@@ -99,7 +107,7 @@ export function KanbanCard({ card, column, index }: CardProps) {
           const toColumn = success ? drag.hoverColumn.get() : null;
           scheduleOnRN(endDrag, id, columnId, index, toColumn, drag.hoverIndex.get());
         }),
-    [enabled, longPressDelay, id, columnId, index, drag, ref, containerRef, startDrag, endDrag]
+    [enabled, longPressDelay, id, columnId, index, drag, containerRef, startDrag, endDrag]
   );
 
   const animatedStyle = useAnimatedStyle(() => {
