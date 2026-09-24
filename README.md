@@ -2,6 +2,10 @@
 
 A customizable drag-and-drop Kanban board for React Native, built on [Reanimated](https://docs.swmansion.com/react-native-reanimated/) and [Gesture Handler](https://docs.swmansion.com/react-native-gesture-handler/). Everything runs on the UI thread.
 
+<p>
+  <img src="./example/assets/images/kanban-dnd-demo.gif" alt="Dragging cards between columns on iOS" width="300" />
+</p>
+
 - Reorder cards within a column and move them between columns
 - Animated drop gap, floating drag preview, and column highlight
 - Auto-scrolls the board and columns when a card is dragged near an edge
