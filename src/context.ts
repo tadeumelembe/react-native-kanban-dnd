@@ -96,6 +96,7 @@ export interface BoardConfig {
   autoScrollSpeed: number;
   dragScale: number;
   dragRotation: string;
+  blockedColumnOpacity: number;
   showColumnCount: boolean;
   emptyColumnText: string;
   renderCard?: KanbanBoardProps<AnyCard, AnyColumn>['renderCard'];

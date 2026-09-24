@@ -167,7 +167,7 @@ Set column colors through `theme`, not `styles.column`, because the column backg
 />
 ```
 
-If a card is dropped on a column it isn't allowed in, it goes back to where it started.
+While dragging, columns the card isn't allowed in fade out (see `blockedColumnOpacity`). If a card is dropped on one of them, it goes back to where it started.
 
 ### Events
 
@@ -208,6 +208,7 @@ import * as Haptics from 'expo-haptics';
 | `autoScrollSpeed` | `number` | `12` | Maximum auto-scroll speed (points per frame) |
 | `dragScale` | `number` | `1.03` | Scale of the dragged card |
 | `dragRotation` | `string` | `'2deg'` | Rotation of the dragged card |
+| `blockedColumnOpacity` | `number` | `0.4` | Opacity of columns the dragged card can't be dropped into |
 | `showColumnCount` | `boolean` | `true` | Show the card count in the default header |
 | `emptyColumnText` | `string` | `'No cards'` | Text in empty columns |
 

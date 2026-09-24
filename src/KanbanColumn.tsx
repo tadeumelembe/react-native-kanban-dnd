@@ -1,11 +1,14 @@
 import { type LayoutChangeEvent, StyleSheet, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Animated, {
+  interpolateColor,
   scrollTo,
   useAnimatedRef,
   useAnimatedScrollHandler,
   useAnimatedStyle,
+  useDerivedValue,
   useFrameCallback,
+  withTiming,
 } from 'react-native-reanimated';
 
 import { type ColumnFrame, useBoardContext } from './context';
@@ -13,6 +16,8 @@ import { KanbanCard } from './KanbanCard';
 import type { KanbanCardBase, KanbanColumnData } from './types';
 
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
+
+const HIGHLIGHT_DURATION = 200;
 
 const EMPTY_FRAME: ColumnFrame = { x: 0, y: 0, width: 0, bodyY: 0, bodyHeight: 0, contentHeight: 0 };
 
@@ -68,11 +73,29 @@ export function KanbanColumn({ column }: { column: KanbanColumnData<KanbanCardBa
     scrollTo(scrollRef, 0, next, false);
   });
 
+  // 0 → 1 while a card is dragged over this column; the colors are blended from it.
+  const highlight = useDerivedValue(() =>
+    withTiming(drag.activeId.get() !== null && drag.hoverColumn.get() === id ? 1 : 0, {
+      duration: HIGHLIGHT_DURATION,
+    })
+  );
+
+  // Fade columns the dragged card isn't allowed into, so a refused drop isn't a surprise.
+  const { blockedColumnOpacity } = config;
+  const opacity = useDerivedValue(() =>
+    withTiming(
+      drag.activeId.get() !== null && drag.blockedColumns.get()[id] ? blockedColumnOpacity : 1,
+      { duration: HIGHLIGHT_DURATION }
+    )
+  );
+
   const highlightStyle = useAnimatedStyle(() => ({
-    backgroundColor:
-      drag.activeId.get() !== null && drag.hoverColumn.get() === id
-        ? theme.columnHighlightBackground
-        : theme.columnBackground,
+    opacity: opacity.get(),
+    backgroundColor: interpolateColor(
+      highlight.get(),
+      [0, 1],
+      [theme.columnBackground, theme.columnHighlightBackground]
+    ),
   }));
 
   return (

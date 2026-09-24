@@ -128,6 +128,8 @@ export interface KanbanBoardProps<
   dragScale?: number;
   /** Rotation of the floating card while dragging. @default '2deg' */
   dragRotation?: string;
+  /** Opacity of columns the dragged card can't be dropped into (see `canDropCard`). @default 0.4 */
+  blockedColumnOpacity?: number;
   /** @default true */
   showColumnCount?: boolean;
   /** Text shown in empty columns when `renderEmptyColumn` is not set. @default 'No cards' */
