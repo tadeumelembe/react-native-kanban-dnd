@@ -10,19 +10,67 @@ A customizable drag-and-drop Kanban board for React Native, built on [Reanimated
 - Rules for which cards can be dragged and where they can be dropped
 - Fully typed, with generics for your own card and column shapes
 
+## Requirements
+
+| Dependency | Supported | Tested with |
+| --- | --- | --- |
+| React Native | New Architecture | 0.86.3 |
+| React | | 19.2.3 |
+| Expo SDK (optional) | | 57 (`expo@57.0.24`) |
+| `react-native-reanimated` | >= 4.0.0 | 4.5.1 |
+| `react-native-worklets` | >= 0.5.0 | 0.10.1 |
+| `react-native-gesture-handler` | >= 2.16.0 | 2.32.0 |
+
+Reanimated 4 only runs on the [New Architecture](https://reactnative.dev/architecture/landing-page). It is on by default since React Native 0.76 and Expo SDK 52.
+
 ## Installation
 
-```sh
-npm install react-native-kanban-dnd
-```
-
-Install the peer dependencies if your app doesn't have them yet:
+### Expo
 
 ```sh
-npx expo install react-native-gesture-handler react-native-reanimated react-native-worklets
+npx expo install react-native-kanban-dnd react-native-gesture-handler react-native-reanimated react-native-worklets
 ```
 
-Wrap your app root in `GestureHandlerRootView`:
+`babel-preset-expo` already includes the Worklets Babel plugin, so there's nothing else to configure. Rebuild your development build after adding the native dependencies.
+
+### React Native CLI
+
+1. Install the package and its peer dependencies:
+
+   ```sh
+   npm install react-native-kanban-dnd react-native-gesture-handler react-native-reanimated react-native-worklets
+   ```
+
+2. Add the Worklets Babel plugin to `babel.config.js`. It must be the **last** plugin in the list:
+
+   ```js
+   module.exports = {
+     presets: ['module:@react-native/babel-preset'],
+     plugins: [
+       // ...other plugins
+       'react-native-worklets/plugin',
+     ],
+   };
+   ```
+
+3. Install the iOS pods:
+
+   ```sh
+   cd ios && pod install
+   ```
+
+4. Clear the Metro cache and rebuild the app:
+
+   ```sh
+   npx react-native start --reset-cache
+   npx react-native run-ios   # or run-android
+   ```
+
+See the [Reanimated](https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/getting-started/) and [Gesture Handler](https://docs.swmansion.com/react-native-gesture-handler/docs/fundamentals/installation) installation guides if you run into build problems.
+
+### Gesture Handler root
+
+With either setup, wrap your app root in `GestureHandlerRootView`:
 
 ```tsx
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -226,10 +274,13 @@ yarn example ios
 
 ```sh
 yarn typecheck
-yarn lint
+yarn lint          # Biome: lint, formatting, and import order
+yarn format        # apply Biome fixes
 yarn test
 yarn build         # outputs to lib/
 ```
+
+A Husky pre-commit hook runs `lint`, `typecheck`, and `test`.
 
 ## License
 
