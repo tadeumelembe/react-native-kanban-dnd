@@ -16,6 +16,7 @@
   "files": [
     "src",
     "lib",
+    "skills",
     "!**/__tests__",
     "!**/*.test.*"
   ],
