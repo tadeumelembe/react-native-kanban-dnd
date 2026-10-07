@@ -264,6 +264,17 @@ import * as Haptics from 'expo-haptics';
 | `showColumnCount` | `boolean` | `true` | Show the card count in the default header |
 | `emptyColumnText` | `string` | `'No cards'` | Text in empty columns |
 
+## Claude Code skill
+
+The package includes an [Agent Skill](https://docs.claude.com/en/docs/claude-code/skills) that teaches Claude Code how to set up and use this library: the setup checklist, controlled state with `moveCard`, typed custom cards, theming, drag rules, and common pitfalls. Copy it into your project after installing the package:
+
+```sh
+mkdir -p .claude/skills
+cp -r node_modules/react-native-kanban-dnd/skills/react-native-kanban-dnd .claude/skills/
+```
+
+To use it in all your projects, copy it to `~/.claude/skills/` instead. Claude loads it automatically when you ask for a Kanban board or work with `react-native-kanban-dnd` code.
+
 ## Example app
 
 The `example/` folder is an Expo app that uses the library straight from `src/`:
@@ -285,6 +296,13 @@ yarn build         # outputs to lib/
 ```
 
 A Husky pre-commit hook runs `lint`, `typecheck`, and `test`.
+
+If you contribute with Claude Code, the repo includes project skills in `.claude/skills/`:
+
+- `verify`: runs lint, typecheck, tests, and build, and lists the manual checks for UI changes
+- `add-board-prop`: adds a new prop, theme key, or style key and wires it through types, defaults, context, and docs
+
+The user-facing skill lives in `skills/react-native-kanban-dnd/` and ships with the npm package.
 
 ## License
 
